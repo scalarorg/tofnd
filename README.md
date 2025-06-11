@@ -1,4 +1,8 @@
+
 # tofnd: A cryptographic signing service
+
+## This repo is forked from Axelar organization
+
 
 Tofnd is a [gRPC](https://grpc.io/) server written in Rust that wraps the [tofn](https://github.com/axelarnetwork/tofn) cryptography library.
 
@@ -27,7 +31,7 @@ Pre-built releases can be found [here](https://github.com/axelarnetwork/tofnd/re
 ### Source
 
 ```bash
-git clone git@github.com:axelarnetwork/tofnd.git --recursive
+git clone git@github.com:scalarorg/tofnd.git --recursive
 ```
 
 ```bash
