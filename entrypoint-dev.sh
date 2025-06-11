@@ -33,6 +33,7 @@ check_bin
 
 ARGS+=" -d $TOFND_HOME"
 
+PASSWORD=12345678
 echo PASSWORD: $PASSWORD
 echo ARGS: $ARGS
 

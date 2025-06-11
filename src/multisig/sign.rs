@@ -20,8 +20,10 @@ impl MultisigService {
         let key_pair = KeyPair::new(&secret_recovery_key, request.key_uid.as_bytes(), algorithm)
             .map_err(|_| anyhow!("key re-generation failed"))?;
 
+        let msg_to_sign = request.msg_to_sign.as_slice().try_into()?;
+
         let signature = key_pair
-            .sign(&request.msg_to_sign.as_slice().try_into()?)
+            .sign(&msg_to_sign)
             .map_err(|_| anyhow!("sign failed"))?;
 
         Ok(signature)

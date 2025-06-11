@@ -10,6 +10,45 @@ pub enum KeyPair {
     Ed25519(ed25519::KeyPair),
 }
 
+impl std::fmt::Debug for KeyPair {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self)
+    }
+}
+
+impl std::fmt::Display for KeyPair {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Ecdsa(key_pair) => {
+                let secret_key = key_pair.signing_key().as_ref().to_bytes().to_vec();
+                let public_key = key_pair.encoded_verifying_key().to_vec();
+
+                let secret_key = secret_key
+                    .iter()
+                    .map(|b| format!("{:x}", b))
+                    .collect::<Vec<_>>()
+                    .join("");
+
+                let public_key = public_key
+                    .iter()
+                    .map(|b| format!("{:02x}", b))
+                    .collect::<Vec<_>>()
+                    .join("");
+
+                write!(
+                    f,
+                    "PrivateKey({:?}, PublicKey({:?}))",
+                    secret_key, public_key
+                )
+            }
+
+            Self::Ed25519(key_pair) => {
+                write!(f, "{:?}", key_pair)
+            }
+        }
+    }
+}
+
 impl KeyPair {
     /// Create a new `KeyPair` from the provided `SecretRecoveryKey` and `session_nonce` deterministically, for the given `algorithm`.
     pub fn new(
