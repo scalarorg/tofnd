@@ -38,5 +38,5 @@ echo ARGS: $ARGS
 
 # execute tofnd daemon
 # exec echo ${PASSWORD} | $EXEC_BIN ${ARGS} "$@"; \
-exec $EXEC_BIN ${ARGS} "$@"
+exec echo ${PASSWORD} | $EXEC_BIN ${ARGS} "$@"
 

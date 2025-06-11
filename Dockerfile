@@ -18,6 +18,7 @@ RUN --mount=type=ssh cargo build --release
 COPY src ./src
 COPY proto ./proto
 COPY build.rs ./build.rs
+COPY descriptor.bin ./descriptor.bin
 
 RUN rustup component add rustfmt
 

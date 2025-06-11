@@ -18,6 +18,8 @@ pub type TofndResult<Success> = anyhow::Result<Success>;
 // protocol buffers via tonic: https://github.com/hyperium/tonic/blob/master/examples/helloworld-tutorial.md#writing-our-server
 pub mod proto {
     tonic::include_proto!("tofnd");
+
+    pub(crate) const FILE_DESCRIPTOR_SET: &[u8] = tonic::include_file_descriptor_set!("descriptor");
 }
 
 mod config;
@@ -71,8 +73,14 @@ async fn main() -> TofndResult<()> {
         incoming.local_addr()?
     );
 
+    let reflection_service = tonic_reflection::server::Builder::configure()
+        .register_encoded_file_descriptor_set(proto::FILE_DESCRIPTOR_SET)
+        .build_v1()
+        .unwrap();
+
     tonic::transport::Server::builder()
         .add_service(service)
+        .add_service(reflection_service)
         .serve_with_incoming_shutdown(TcpListenerStream::new(incoming), shutdown_signal())
         .await?;
 
